@@ -142,6 +142,7 @@
   </div>
 
   <script src="store.js"></script>
+  <script src="cloud.js"></script>
   <script src="auth.js"></script>
   <script>
     const unitCN = {
@@ -196,7 +197,7 @@
       saveTodayRecord('units', { score: scoreVal, correct: correctVal, wrong: wrongVal });
     }
 
-    initAuth(function() { initFromStore(); });
+    initAuth(async function() { await cloudInit(); initFromStore(); });
 
     function switchCategory(cat, btn) {
       currentCategory = cat;

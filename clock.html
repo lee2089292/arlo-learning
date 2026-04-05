@@ -195,6 +195,7 @@
   </div>
 
   <script src="store.js"></script>
+  <script src="cloud.js"></script>
   <script src="auth.js"></script>
   <script>
     const canvas = document.getElementById('clockCanvas');
@@ -218,7 +219,7 @@
       saveTodayRecord('clock', { score: scoreVal, correct: correctVal, wrong: wrongVal });
     }
 
-    initAuth(function() { initFromStore(); });
+    initAuth(async function() { await cloudInit(); initFromStore(); });
 
     function getSize() {
       // 实际渲染尺寸跟随 CSS 宽度

@@ -63,6 +63,43 @@
       padding: 20px;
       font-size: 0.95rem;
     }
+    .sync-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px dashed #cce4ff;
+    }
+    .sync-btns {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .sync-btns .btn { font-size: 0.9rem; padding: 8px 18px; }
+    #sync-area {
+      display: none;
+      margin-top: 10px;
+    }
+    #sync-area textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 14px;
+      border: 2px solid #84b6f4;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-family: monospace;
+      resize: vertical;
+      outline: none;
+      word-break: break-all;
+    }
+    #sync-area textarea:focus { border-color: #1a73e8; }
+    #sync-msg {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    #sync-msg.ok { color: #27ae60; }
+    #sync-msg.err { color: #e74c3c; }
   </style>
 </head>
 <body>
@@ -97,15 +134,39 @@
     <div class="card" style="margin-top:20px;">
       <h2 style="color:#1a73e8;margin-bottom:12px;font-size:1.1rem;">📊 学习历史记录</h2>
       <div id="history-container"></div>
+
+      <div class="sync-section">
+        <h2 style="color:#1a73e8;margin-bottom:10px;font-size:1rem;">☁️ 云端同步</h2>
+        <p style="color:#888;font-size:0.85rem;margin-bottom:10px;">学习记录自动同步到云端，换设备也能看到</p>
+        <div id="cloud-status" style="font-size:0.85rem;color:#888;margin-bottom:10px;">⏳ 正在连接云端...</div>
+        <div class="sync-btns">
+          <button class="btn btn-primary" onclick="doExport()">📤 导出记录</button>
+          <button class="btn btn-secondary" onclick="showImport()">📥 手动导入</button>
+        </div>
+        <div id="sync-area">
+          <textarea id="sync-data" placeholder="粘贴从其他设备导出的记录..."></textarea>
+          <button class="btn btn-success" onclick="doImport()" style="margin-top:8px;width:100%;font-size:0.9rem;">✅ 确认导入</button>
+          <div id="sync-msg"></div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="store.js"></script>
+  <script src="cloud.js"></script>
   <script src="auth.js"></script>
   <script>
-    initAuth(function(name) {
+    onSyncStatus(function(msg, ok) {
+      const el = document.getElementById('cloud-status');
+      el.textContent = (ok ? '☁️ ' : '⚠️ ') + msg;
+      el.style.color = ok ? '#27ae60' : '#e74c3c';
+    });
+
+    initAuth(async function(name) {
       document.getElementById('welcome-name').innerHTML =
         '👋 ' + name + '，今天也要加油哦！<span class="switch-user" onclick="switchUser()">切换用户</span>';
+      // 先从云端同步
+      await cloudInit();
       renderHistory();
     });
 
@@ -137,6 +198,36 @@
       });
       html += '</tbody></table>';
       container.innerHTML = html;
+    }
+
+    function doExport() {
+      const data = exportUserData();
+      if (!data) { alert('没有可导出的记录'); return; }
+      const area = document.getElementById('sync-area');
+      area.style.display = 'block';
+      document.getElementById('sync-data').value = data;
+      document.getElementById('sync-data').select();
+      try { document.execCommand('copy'); }
+      catch(e) {}
+      document.getElementById('sync-msg').textContent = '已复制到剪贴板，粘贴到其他设备导入即可';
+      document.getElementById('sync-msg').className = 'ok';
+    }
+
+    function showImport() {
+      const area = document.getElementById('sync-area');
+      area.style.display = 'block';
+      document.getElementById('sync-data').value = '';
+      document.getElementById('sync-data').placeholder = '粘贴从其他设备导出的记录...';
+      document.getElementById('sync-msg').textContent = '';
+    }
+
+    function doImport() {
+      const val = document.getElementById('sync-data').value.trim();
+      if (!val) { document.getElementById('sync-msg').textContent = '请先粘贴数据'; document.getElementById('sync-msg').className = 'err'; return; }
+      const result = importUserData(val);
+      document.getElementById('sync-msg').textContent = result.msg;
+      document.getElementById('sync-msg').className = result.ok ? 'ok' : 'err';
+      if (result.ok) { renderHistory(); syncSave(); }
     }
   </script>
 </body>
