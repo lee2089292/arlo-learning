@@ -28,6 +28,11 @@
         "score": 240,
         "correct": 24,
         "wrong": 17
+      },
+      "english": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
