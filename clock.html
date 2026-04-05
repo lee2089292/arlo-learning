@@ -194,6 +194,8 @@
     </div>
   </div>
 
+  <script src="store.js"></script>
+  <script src="auth.js"></script>
   <script>
     const canvas = document.getElementById('clockCanvas');
     const ctx = canvas.getContext('2d');
@@ -202,6 +204,21 @@
     let questionHour = 0, questionMin = 0;
     let userHour = 0, userMin = 0;
     let scoreVal = 0, correctVal = 0, wrongVal = 0;
+
+    // 页面加载时恢复今日记录
+    function initFromStore() {
+      const rec = getTodayRecord('clock');
+      scoreVal = rec.score;
+      correctVal = rec.correct;
+      wrongVal = rec.wrong;
+      updateScore();
+    }
+
+    function saveToStore() {
+      saveTodayRecord('clock', { score: scoreVal, correct: correctVal, wrong: wrongVal });
+    }
+
+    initAuth(function() { initFromStore(); });
 
     function getSize() {
       // 实际渲染尺寸跟随 CSS 宽度
@@ -348,6 +365,7 @@
         }
       }
       updateScore();
+      saveToStore();
     }
 
     function showResult(msg, type) {

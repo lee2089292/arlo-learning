@@ -24,6 +24,45 @@
       font-size: 1.8rem;
       letter-spacing: 6px;
     }
+    .welcome-name {
+      font-size: 1.2rem;
+      color: #4facfe;
+      margin-top: 8px;
+    }
+    .switch-user {
+      font-size: 0.8rem;
+      color: #aaa;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: 8px;
+    }
+    .switch-user:hover { color: #1a73e8; }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .history-table th {
+      background: linear-gradient(135deg, #1a73e8, #4facfe);
+      color: #fff;
+      padding: 8px;
+      text-align: center;
+    }
+    .history-table td {
+      padding: 7px 8px;
+      text-align: center;
+      border-bottom: 1px solid #cce4ff;
+    }
+    .history-table tr:nth-child(even) td {
+      background: #f0f7ff;
+    }
+    .no-data {
+      text-align: center;
+      color: #aaa;
+      padding: 20px;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -39,6 +78,7 @@
       <div class="stars">⭐ ⭐ ⭐</div>
       <h1>欢迎来到含诺（Arlo）的学习站！</h1>
       <p>快来练习单位换算和认识时钟吧，加油！💪</p>
+      <div class="welcome-name" id="welcome-name"></div>
     </div>
 
     <div class="home-cards">
@@ -53,6 +93,51 @@
         <p>看钟面读时间，或者自己拨指针！</p>
       </a>
     </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h2 style="color:#1a73e8;margin-bottom:12px;font-size:1.1rem;">📊 学习历史记录</h2>
+      <div id="history-container"></div>
+    </div>
   </div>
+
+  <script src="store.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    initAuth(function(name) {
+      document.getElementById('welcome-name').innerHTML =
+        '👋 ' + name + '，今天也要加油哦！<span class="switch-user" onclick="switchUser()">切换用户</span>';
+      renderHistory();
+    });
+
+    function switchUser() {
+      localStorage.removeItem('arlo_username');
+      location.reload();
+    }
+
+    function renderHistory() {
+      const history = getUserHistory();
+      const container = document.getElementById('history-container');
+      if (history.length === 0) {
+        container.innerHTML = '<div class="no-data">还没有学习记录，快去练习吧 🎯</div>';
+        return;
+      }
+      let html = '<table class="history-table"><thead><tr>' +
+        '<th>日期</th><th>📏 换算得分</th><th>📏 对/错</th><th>🕐 时钟得分</th><th>🕐 对/错</th>' +
+        '</tr></thead><tbody>';
+      history.forEach(day => {
+        const u = day.units || { score: 0, correct: 0, wrong: 0 };
+        const c = day.clock || { score: 0, correct: 0, wrong: 0 };
+        html += `<tr>
+          <td>${day.date}</td>
+          <td>${u.score}</td>
+          <td>${u.correct} ✅ / ${u.wrong} ❌</td>
+          <td>${c.score}</td>
+          <td>${c.correct} ✅ / ${c.wrong} ❌</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+  </script>
 </body>
 </html>
