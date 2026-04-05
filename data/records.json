@@ -33,6 +33,11 @@
         "score": 330,
         "correct": 33,
         "wrong": 20
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
