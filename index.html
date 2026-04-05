@@ -13,10 +13,28 @@
     .switch-user { font-size: 0.78rem; color: #aaa; cursor: pointer; text-decoration: underline; margin-left: 6px; }
     .switch-user:hover { color: #1a73e8; }
     .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
-    .history-table th { background: #1a73e8; color: #fff; padding: 7px; text-align: center; }
-    .history-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #eee; }
+    .history-table th { background: #1a73e8; color: #fff; padding: 7px; text-align: center; white-space: nowrap; }
+    .history-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #eee; white-space: nowrap; }
     .history-table tr:nth-child(even) td { background: #f8f9fa; }
     .no-data { text-align: center; color: #aaa; padding: 16px; font-size: 0.9rem; }
+    /* 移动端：表格改为卡片 */
+    @media (max-width: 500px) {
+      .history-table, .history-table thead, .history-table tbody, .history-table tr, .history-table th, .history-table td {
+        display: block; width: 100%;
+      }
+      .history-table thead { display: none; }
+      .history-table tr {
+        background: #f8f9fa; border-radius: 8px; margin-bottom: 8px; padding: 10px 12px;
+        border: 1px solid #eee;
+      }
+      .history-table td {
+        text-align: left; padding: 3px 0; border: none; white-space: normal;
+      }
+      .history-table td::before {
+        content: attr(data-label);
+        font-weight: 600; color: #888; margin-right: 8px; font-size: 0.8rem;
+      }
+    }
     .sync-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid #eee; }
     .sync-btns { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .sync-btns .btn { font-size: 0.85rem; padding: 7px 14px; }
@@ -106,12 +124,18 @@
         return;
       }
       let html = '<table class="history-table"><thead><tr>' +
-        '<th>日期</th><th>📏 得分</th><th>📏 对/错</th><th>🕐 得分</th><th>🕐 对/错</th>' +
+        '<th>日期</th><th>换算</th><th>对/错</th><th>时钟</th><th>对/错</th>' +
         '</tr></thead><tbody>';
       history.forEach(day => {
         const u = day.units || { score: 0, correct: 0, wrong: 0 };
         const c = day.clock || { score: 0, correct: 0, wrong: 0 };
-        html += `<tr><td>${day.date}</td><td>${u.score}</td><td>${u.correct}/${u.wrong}</td><td>${c.score}</td><td>${c.correct}/${c.wrong}</td></tr>`;
+        html += `<tr>
+          <td data-label="日期">${day.date}</td>
+          <td data-label="📏 换算">${u.score}分</td>
+          <td data-label="📏 对/错">${u.correct}对 ${u.wrong}错</td>
+          <td data-label="🕐 时钟">${c.score}分</td>
+          <td data-label="🕐 对/错">${c.correct}对 ${c.wrong}错</td>
+        </tr>`;
       });
       html += '</tbody></table>';
       container.innerHTML = html;
