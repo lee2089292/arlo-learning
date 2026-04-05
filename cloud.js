@@ -94,7 +94,7 @@ function mergeRecords(local, cloud) {
       if (!merged[user][date]) {
         merged[user][date] = local[user][date];
       } else {
-        for (const mod of ['units', 'clock']) {
+        for (const mod of ['units', 'clock', 'english']) {
           const l = local[user][date] && local[user][date][mod];
           const c = merged[user][date][mod];
           if (l && (!c || l.score > c.score)) {

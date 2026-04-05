@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>英语单词 🔤</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .unit-select { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .unit-select .tab-btn { font-size: 0.8rem; padding: 5px 10px; }
+    .mode-toggle { display: flex; gap: 6px; margin-bottom: 12px; }
+    .question-area { font-size: 1.3rem; min-height: 50px; display: flex; align-items: center; justify-content: center; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .opt-btn {
+      padding: 12px 8px; border-radius: 8px; border: 1.5px solid #ddd;
+      background: #fff; font-size: 0.95rem; cursor: pointer; text-align: center;
+      font-family: inherit; transition: all 0.15s; word-break: break-word;
+    }
+    .opt-btn:active { transform: scale(0.97); }
+    .opt-btn.correct { background: #e6f4ea; border-color: #1e7e34; color: #1e7e34; }
+    .opt-btn.wrong { background: #fce8e6; border-color: #c5221f; color: #c5221f; }
+    .opt-btn.highlight { background: #e6f4ea; border-color: #1e7e34; }
+    .progress { font-size: 0.8rem; color: #999; text-align: center; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <span class="logo">🌟 含诺学习站</span>
+    <a href="index.html">🏠 首页</a>
+    <a href="units.html">📏 换算</a>
+    <a href="clock.html">🕐 时钟</a>
+    <a href="english.html">🔤 英语</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h1 style="font-size:1.2rem;margin-bottom:12px;">🔤 英语单词（四年级下册）</h1>
+
+      <div class="mode-toggle">
+        <button class="tab-btn active" onclick="setMode('cn2en',this)">中文→英文</button>
+        <button class="tab-btn" onclick="setMode('en2cn',this)">英文→中文</button>
+      </div>
+
+      <div class="unit-select" id="unit-select"></div>
+
+      <div class="score-inline">
+        得分 <span id="score">0</span> ｜ 对 <span id="correct">0</span> ｜ 错 <span id="wrong">0</span>
+      </div>
+
+      <div class="question-area" id="question">加载中...</div>
+      <div class="options" id="options"></div>
+      <div class="result-box" id="result"></div>
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="store.js"></script>
+  <script src="cloud.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    let mode = 'cn2en'; // cn2en or en2cn
+    let currentUnit = 'all';
+    let wordPool = [];
+    let currentQ = null;
+    let scoreVal = 0, correctVal = 0, wrongVal = 0;
+    let answered = 0;
+    let locked = false;
+
+    function initFromStore() {
+      const rec = getTodayRecord('english');
+      scoreVal = rec.score; correctVal = rec.correct; wrongVal = rec.wrong;
+      updateScore();
+    }
+    function saveToStore() {
+      saveTodayRecord('english', { score: scoreVal, correct: correctVal, wrong: wrongVal });
+    }
+
+    initAuth(async function() { await cloudInit(); initFromStore(); buildUnitBtns(); loadWords(); nextQuestion(); });
+
+    function buildUnitBtns() {
+      const container = document.getElementById('unit-select');
+      let html = '<button class="tab-btn active" onclick="selectUnit(\'all\',this)">全部</button>';
+      for (const mod in WORD_DATA) {
+        const short = mod.replace('Module ', 'M');
+        html += `<button class="tab-btn" onclick="selectUnit('${mod}',this)">${short}</button>`;
+      }
+      container.innerHTML = html;
+    }
+
+    function selectUnit(unit, btn) {
+      currentUnit = unit;
+      document.querySelectorAll('#unit-select .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadWords();
+      nextQuestion();
+    }
+
+    function setMode(m, btn) {
+      mode = m;
+      document.querySelectorAll('.mode-toggle .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      nextQuestion();
+    }
+
+    function loadWords() {
+      if (currentUnit === 'all') {
+        wordPool = [];
+        for (const mod in WORD_DATA) wordPool = wordPool.concat(WORD_DATA[mod]);
+      } else {
+        wordPool = WORD_DATA[currentUnit] || [];
+      }
+      // 去重（同一个单词可能出现在多个 module）
+      const seen = new Set();
+      wordPool = wordPool.filter(w => {
+        const key = w.en + '|' + w.cn;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      answered = 0;
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function nextQuestion() {
+      locked = false;
+      hideResult();
+      if (wordPool.length < 2) return;
+
+      // 随机选一个正确答案
+      const idx = Math.floor(Math.random() * wordPool.length);
+      const correct = wordPool[idx];
+
+      // 随机选3个干扰项
+      let others = wordPool.filter((_, i) => i !== idx);
+      others = shuffle(others).slice(0, 3);
+
+      const options = shuffle([correct, ...others]);
+      currentQ = { correct, options };
+
+      // 显示题目
+      const qEl = document.getElementById('question');
+      if (mode === 'cn2en') {
+        qEl.textContent = correct.cn;
+      } else {
+        qEl.textContent = correct.en;
+      }
+
+      // 显示选项
+      const optEl = document.getElementById('options');
+      optEl.innerHTML = options.map((o, i) => {
+        const label = mode === 'cn2en' ? o.en : o.cn;
+        return `<button class="opt-btn" onclick="pickAnswer(${i})">${label}</button>`;
+      }).join('');
+
+      document.getElementById('progress').textContent = `共 ${wordPool.length} 个单词`;
+    }
+
+    function pickAnswer(i) {
+      if (locked) return;
+      locked = true;
+      const picked = currentQ.options[i];
+      const btns = document.querySelectorAll('.opt-btn');
+      const correctIdx = currentQ.options.indexOf(currentQ.correct);
+
+      if (picked === currentQ.correct) {
+        correctVal++; scoreVal += 10;
+        btns[i].classList.add('correct');
+        showResult('✅ 正确！', 'correct');
+      } else {
+        wrongVal++;
+        btns[i].classList.add('wrong');
+        btns[correctIdx].classList.add('highlight');
+        const hint = mode === 'cn2en'
+          ? `❌ ${currentQ.correct.cn} → ${currentQ.correct.en}`
+          : `❌ ${currentQ.correct.en} → ${currentQ.correct.cn}`;
+        showResult(hint, 'wrong');
+      }
+      updateScore(); saveToStore();
+      setTimeout(() => nextQuestion(), 1200);
+    }
+
+    function showResult(msg, type) {
+      const el = document.getElementById('result');
+      el.textContent = msg; el.className = 'result-box ' + type;
+    }
+    function hideResult() { document.getElementById('result').className = 'result-box'; }
+    function updateScore() {
+      document.getElementById('score').textContent = scoreVal;
+      document.getElementById('correct').textContent = correctVal;
+      document.getElementById('wrong').textContent = wrongVal;
+    }
+  </script>
+</body>
+</html>

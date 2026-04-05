@@ -55,6 +55,7 @@
     <a href="index.html">🏠 首页</a>
     <a href="units.html">📏 单位换算</a>
     <a href="clock.html">🕐 认识时钟</a>
+    <a href="english.html">🔤 英语单词</a>
   </nav>
 
   <div class="container">
@@ -74,6 +75,11 @@
         <div class="icon">🕐</div>
         <h2>认识时钟</h2>
         <p>看钟面读时间，拨指针</p>
+      </a>
+      <a href="english.html" class="home-card">
+        <div class="icon">🔤</div>
+        <h2>英语单词</h2>
+        <p>四年级下册单词练习</p>
       </a>
     </div>
 
@@ -124,17 +130,20 @@
         return;
       }
       let html = '<table class="history-table"><thead><tr>' +
-        '<th>日期</th><th>换算</th><th>对/错</th><th>时钟</th><th>对/错</th>' +
+        '<th>日期</th><th>📏 换算</th><th>📏 对/错</th><th>🕐 时钟</th><th>🕐 对/错</th><th>🔤 英语</th><th>🔤 对/错</th>' +
         '</tr></thead><tbody>';
       history.forEach(day => {
         const u = day.units || { score: 0, correct: 0, wrong: 0 };
         const c = day.clock || { score: 0, correct: 0, wrong: 0 };
+        const e = day.english || { score: 0, correct: 0, wrong: 0 };
         html += `<tr>
           <td data-label="日期">${day.date}</td>
           <td data-label="📏 换算">${u.score}分</td>
           <td data-label="📏 对/错">${u.correct}对 ${u.wrong}错</td>
           <td data-label="🕐 时钟">${c.score}分</td>
           <td data-label="🕐 对/错">${c.correct}对 ${c.wrong}错</td>
+          <td data-label="🔤 英语">${e.score}分</td>
+          <td data-label="🔤 对/错">${e.correct}对 ${e.wrong}错</td>
         </tr>`;
       });
       html += '</tbody></table>';

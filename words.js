@@ -1,0 +1,140 @@
+/**
+ * 外研版（新标准）三起点 四年级下册 英语单词库
+ * 按 Module 分单元
+ */
+const WORD_DATA = {
+  'Module 1': [
+    { en: 'nice', cn: '好的；友好的' },
+    { en: 'shy', cn: '害羞的' },
+    { en: 'clever', cn: '聪明的' },
+    { en: 'naughty', cn: '淘气的' },
+    { en: 'a bit', cn: '有一点' },
+    { en: 'cool', cn: '酷的' },
+    { en: 'little', cn: '小的' },
+    { en: 'cute', cn: '可爱的' },
+    { en: 'parrot', cn: '鹦鹉' },
+    { en: 'aunt', cn: '姑妈；姨妈' },
+    { en: 'uncle', cn: '叔叔；舅舅' }
+  ],
+  'Module 2': [
+    { en: 'city', cn: '城市' },
+    { en: 'ship', cn: '船' },
+    { en: 'beautiful', cn: '美丽的' },
+    { en: 'whose', cn: '谁的' },
+    { en: 'queen', cn: '女王' },
+    { en: 'close', cn: '近的；接近的' },
+    { en: 'old', cn: '古老的；旧的' },
+    { en: 'famous', cn: '著名的' },
+    { en: 'London', cn: '伦敦' },
+    { en: 'big', cn: '大的' },
+    { en: 'wide', cn: '宽的' },
+    { en: 'river', cn: '河流' },
+    { en: 'long', cn: '长的' }
+  ],
+  'Module 3': [
+    { en: 'robot', cn: '机器人' },
+    { en: 'will', cn: '将要' },
+    { en: 'everything', cn: '所有事情' },
+    { en: 'one day', cn: '有一天' },
+    { en: 'housework', cn: '家务' },
+    { en: 'learn', cn: '学习' },
+    { en: 'our', cn: '我们的' },
+    { en: 'homework', cn: '家庭作业' },
+    { en: 'won\'t', cn: '将不会' },
+    { en: 'Tuesday', cn: '星期二' },
+    { en: 'Wednesday', cn: '星期三' },
+    { en: 'Monday', cn: '星期一' }
+  ],
+  'Module 4': [
+    { en: 'take', cn: '带走；拿走' },
+    { en: 'fly', cn: '飞' },
+    { en: 'picnic', cn: '野餐' },
+    { en: 'great', cn: '太好了' },
+    { en: 'why', cn: '为什么' },
+    { en: 'because', cn: '因为' },
+    { en: 'so', cn: '所以' },
+    { en: 'rain', cn: '下雨' },
+    { en: 'weather', cn: '天气' },
+    { en: 'cloudy', cn: '多云的' },
+    { en: 'sunny', cn: '晴朗的' },
+    { en: 'windy', cn: '有风的' },
+    { en: 'hot', cn: '热的' },
+    { en: 'cold', cn: '冷的' }
+  ],
+  'Module 5': [
+    { en: 'was', cn: '（is的过去式）是' },
+    { en: 'were', cn: '（are的过去式）是' },
+    { en: 'then', cn: '那时' },
+    { en: 'grandparent', cn: '祖父母；外祖父母' },
+    { en: 'young', cn: '年轻的' },
+    { en: 'old', cn: '年老的' },
+    { en: 'hair', cn: '头发' },
+    { en: 'short', cn: '短的；矮的' },
+    { en: 'long', cn: '长的' },
+    { en: 'tall', cn: '高的' },
+    { en: 'wasn\'t', cn: '不是（过去式）' },
+    { en: 'weren\'t', cn: '不是（过去式）' }
+  ],
+  'Module 6': [
+    { en: 'yesterday', cn: '昨天' },
+    { en: 'well', cn: '好地' },
+    { en: 'team', cn: '队；团队' },
+    { en: 'goal', cn: '进球' },
+    { en: 'play', cn: '玩；踢' },
+    { en: 'badly', cn: '不好地' },
+    { en: 'really', cn: '真正地' },
+    { en: 'catch', cn: '接住' },
+    { en: 'fantastic', cn: '极好的' },
+    { en: 'goalkeeper', cn: '守门员' }
+  ],
+  'Module 7': [
+    { en: 'had', cn: '（have的过去式）有' },
+    { en: 'phone', cn: '电话' },
+    { en: 'yesterday', cn: '昨天' },
+    { en: 'him', cn: '他（宾格）' },
+    { en: 'grandma', cn: '奶奶；外婆' },
+    { en: 'cook', cn: '做饭' },
+    { en: 'wash', cn: '洗' },
+    { en: 'did', cn: '（do的过去式）做' },
+    { en: 'computer', cn: '电脑' },
+    { en: 'game', cn: '游戏' },
+    { en: 'listen', cn: '听' },
+    { en: 'music', cn: '音乐' }
+  ],
+  'Module 8': [
+    { en: 'went', cn: '（go的过去式）去' },
+    { en: 'there', cn: '那里' },
+    { en: 'saw', cn: '（see的过去式）看见' },
+    { en: 'ate', cn: '（eat的过去式）吃' },
+    { en: 'drank', cn: '（drink的过去式）喝' },
+    { en: 'trip', cn: '旅行' },
+    { en: 'bus', cn: '公共汽车' },
+    { en: 'mountain', cn: '山' },
+    { en: 'lake', cn: '湖' },
+    { en: 'photo', cn: '照片' }
+  ],
+  'Module 9': [
+    { en: 'happen', cn: '发生' },
+    { en: 'ride', cn: '骑' },
+    { en: 'thirsty', cn: '口渴的' },
+    { en: 'hungry', cn: '饥饿的' },
+    { en: 'watermelon', cn: '西瓜' },
+    { en: 'carry', cn: '搬；扛' },
+    { en: 'bump', cn: '碰撞' },
+    { en: 'fell', cn: '（fall的过去式）摔倒' },
+    { en: 'bought', cn: '（buy的过去式）买' },
+    { en: 'ice cream', cn: '冰淇淋' }
+  ],
+  'Module 10': [
+    { en: 'fall', cn: '掉落；摔倒' },
+    { en: 'came', cn: '（come的过去式）来' },
+    { en: 'last', cn: '上一个的' },
+    { en: 'after', cn: '在……之后' },
+    { en: 'dear', cn: '亲爱的' },
+    { en: 'met', cn: '（meet的过去式）遇见' },
+    { en: 'ran', cn: '（run的过去式）跑' },
+    { en: 'back', cn: '回来' },
+    { en: 'home', cn: '家' },
+    { en: 'those', cn: '那些' }
+  ]
+};

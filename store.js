@@ -96,7 +96,7 @@ function importUserData(base64Str) {
         existing[date] = payload.records[date];
       } else {
         // 合并：每个模块取较高的得分
-        for (const mod of ['units', 'clock']) {
+        for (const mod of ['units', 'clock', 'english']) {
           const imp = payload.records[date][mod];
           const cur = existing[date][mod];
           if (imp && (!cur || imp.score > cur.score)) {
