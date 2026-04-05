@@ -6,105 +6,34 @@
   <title>含诺（Arlo）的学习站 🌟</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .hero {
-      text-align: center;
-      padding: 40px 16px 20px;
-    }
-    .hero h1 {
-      font-size: 2.4rem;
-      color: #1a73e8;
-      text-shadow: 2px 2px 0 #cce4ff;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      font-size: 1.1rem;
-      color: #888;
-    }
-    .stars {
-      font-size: 1.8rem;
-      letter-spacing: 6px;
-    }
-    .welcome-name {
-      font-size: 1.2rem;
-      color: #4facfe;
-      margin-top: 8px;
-    }
-    .switch-user {
-      font-size: 0.8rem;
-      color: #aaa;
-      cursor: pointer;
-      text-decoration: underline;
-      margin-left: 8px;
-    }
+    .hero { text-align: center; padding: 36px 16px 16px; }
+    .hero h1 { font-size: 1.6rem; color: #333; margin-bottom: 6px; }
+    .hero p { font-size: 0.95rem; color: #999; }
+    .welcome-name { font-size: 1rem; color: #1a73e8; margin-top: 8px; }
+    .switch-user { font-size: 0.78rem; color: #aaa; cursor: pointer; text-decoration: underline; margin-left: 6px; }
     .switch-user:hover { color: #1a73e8; }
-    .history-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-top: 10px;
-    }
-    .history-table th {
-      background: linear-gradient(135deg, #1a73e8, #4facfe);
-      color: #fff;
-      padding: 8px;
-      text-align: center;
-    }
-    .history-table td {
-      padding: 7px 8px;
-      text-align: center;
-      border-bottom: 1px solid #cce4ff;
-    }
-    .history-table tr:nth-child(even) td {
-      background: #f0f7ff;
-    }
-    .no-data {
-      text-align: center;
-      color: #aaa;
-      padding: 20px;
-      font-size: 0.95rem;
-    }
-    .sync-section {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 2px dashed #cce4ff;
-    }
-    .sync-btns {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .sync-btns .btn { font-size: 0.9rem; padding: 8px 18px; }
-    #sync-area {
-      display: none;
-      margin-top: 10px;
-    }
+    .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+    .history-table th { background: #1a73e8; color: #fff; padding: 7px; text-align: center; }
+    .history-table td { padding: 6px 8px; text-align: center; border-bottom: 1px solid #eee; }
+    .history-table tr:nth-child(even) td { background: #f8f9fa; }
+    .no-data { text-align: center; color: #aaa; padding: 16px; font-size: 0.9rem; }
+    .sync-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid #eee; }
+    .sync-btns { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .sync-btns .btn { font-size: 0.85rem; padding: 7px 14px; }
+    #sync-area { display: none; margin-top: 8px; }
     #sync-area textarea {
-      width: 100%;
-      min-height: 80px;
-      border-radius: 14px;
-      border: 2px solid #84b6f4;
-      padding: 10px;
-      font-size: 0.85rem;
-      font-family: monospace;
-      resize: vertical;
-      outline: none;
-      word-break: break-all;
+      width: 100%; min-height: 60px; border-radius: 8px; border: 1.5px solid #ddd;
+      padding: 8px; font-size: 0.8rem; font-family: monospace; resize: vertical; outline: none; word-break: break-all;
     }
     #sync-area textarea:focus { border-color: #1a73e8; }
-    #sync-msg {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-align: center;
-    }
-    #sync-msg.ok { color: #27ae60; }
-    #sync-msg.err { color: #e74c3c; }
+    #sync-msg { margin-top: 6px; font-size: 0.85rem; font-weight: 600; text-align: center; }
+    #sync-msg.ok { color: #1e7e34; }
+    #sync-msg.err { color: #c5221f; }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <span class="logo">🌟 含诺（Arlo）学习站</span>
+    <span class="logo">🌟 含诺学习站</span>
     <a href="index.html">🏠 首页</a>
     <a href="units.html">📏 单位换算</a>
     <a href="clock.html">🕐 认识时钟</a>
@@ -112,9 +41,8 @@
 
   <div class="container">
     <div class="hero">
-      <div class="stars">⭐ ⭐ ⭐</div>
-      <h1>欢迎来到含诺（Arlo）的学习站！</h1>
-      <p>快来练习单位换算和认识时钟吧，加油！💪</p>
+      <h1>含诺（Arlo）的学习站</h1>
+      <p>练习单位换算和认识时钟 💪</p>
       <div class="welcome-name" id="welcome-name"></div>
     </div>
 
@@ -122,30 +50,29 @@
       <a href="units.html" class="home-card">
         <div class="icon">📏</div>
         <h2>单位换算</h2>
-        <p>长度、重量、时间、面积，全都练一练！</p>
+        <p>长度、重量、时间、面积</p>
       </a>
       <a href="clock.html" class="home-card">
         <div class="icon">🕐</div>
         <h2>认识时钟</h2>
-        <p>看钟面读时间，或者自己拨指针！</p>
+        <p>看钟面读时间，拨指针</p>
       </a>
     </div>
 
-    <div class="card" style="margin-top:20px;">
-      <h2 style="color:#1a73e8;margin-bottom:12px;font-size:1.1rem;">📊 学习历史记录</h2>
+    <div class="card" style="margin-top:16px;">
+      <h2 style="font-size:1rem;margin-bottom:10px;">📊 学习记录</h2>
       <div id="history-container"></div>
 
       <div class="sync-section">
-        <h2 style="color:#1a73e8;margin-bottom:10px;font-size:1rem;">☁️ 云端同步</h2>
-        <p style="color:#888;font-size:0.85rem;margin-bottom:10px;">学习记录自动同步到云端，换设备也能看到</p>
-        <div id="cloud-status" style="font-size:0.85rem;color:#888;margin-bottom:10px;">⏳ 正在连接云端...</div>
+        <p style="color:#999;font-size:0.8rem;margin-bottom:8px;">☁️ 记录自动同步到云端</p>
+        <div id="cloud-status" style="font-size:0.8rem;color:#888;margin-bottom:8px;"></div>
         <div class="sync-btns">
-          <button class="btn btn-primary" onclick="doExport()">📤 导出记录</button>
-          <button class="btn btn-secondary" onclick="showImport()">📥 手动导入</button>
+          <button class="btn btn-secondary" onclick="doExport()">📤 导出</button>
+          <button class="btn btn-secondary" onclick="showImport()">📥 导入</button>
         </div>
         <div id="sync-area">
-          <textarea id="sync-data" placeholder="粘贴从其他设备导出的记录..."></textarea>
-          <button class="btn btn-success" onclick="doImport()" style="margin-top:8px;width:100%;font-size:0.9rem;">✅ 确认导入</button>
+          <textarea id="sync-data" placeholder="粘贴记录数据..."></textarea>
+          <button class="btn btn-primary" onclick="doImport()" style="margin-top:6px;width:100%;font-size:0.85rem;">确认导入</button>
           <div id="sync-msg"></div>
         </div>
       </div>
@@ -159,42 +86,32 @@
     onSyncStatus(function(msg, ok) {
       const el = document.getElementById('cloud-status');
       el.textContent = (ok ? '☁️ ' : '⚠️ ') + msg;
-      el.style.color = ok ? '#27ae60' : '#e74c3c';
+      el.style.color = ok ? '#1e7e34' : '#c5221f';
     });
 
     initAuth(async function(name) {
       document.getElementById('welcome-name').innerHTML =
-        '👋 ' + name + '，今天也要加油哦！<span class="switch-user" onclick="switchUser()">切换用户</span>';
-      // 先从云端同步
+        '👋 ' + name + '<span class="switch-user" onclick="switchUser()">切换</span>';
       await cloudInit();
       renderHistory();
     });
 
-    function switchUser() {
-      localStorage.removeItem('arlo_username');
-      location.reload();
-    }
+    function switchUser() { localStorage.removeItem('arlo_username'); location.reload(); }
 
     function renderHistory() {
       const history = getUserHistory();
       const container = document.getElementById('history-container');
       if (history.length === 0) {
-        container.innerHTML = '<div class="no-data">还没有学习记录，快去练习吧 🎯</div>';
+        container.innerHTML = '<div class="no-data">还没有记录，快去练习吧</div>';
         return;
       }
       let html = '<table class="history-table"><thead><tr>' +
-        '<th>日期</th><th>📏 换算得分</th><th>📏 对/错</th><th>🕐 时钟得分</th><th>🕐 对/错</th>' +
+        '<th>日期</th><th>📏 得分</th><th>📏 对/错</th><th>🕐 得分</th><th>🕐 对/错</th>' +
         '</tr></thead><tbody>';
       history.forEach(day => {
         const u = day.units || { score: 0, correct: 0, wrong: 0 };
         const c = day.clock || { score: 0, correct: 0, wrong: 0 };
-        html += `<tr>
-          <td>${day.date}</td>
-          <td>${u.score}</td>
-          <td>${u.correct} ✅ / ${u.wrong} ❌</td>
-          <td>${c.score}</td>
-          <td>${c.correct} ✅ / ${c.wrong} ❌</td>
-        </tr>`;
+        html += `<tr><td>${day.date}</td><td>${u.score}</td><td>${u.correct}/${u.wrong}</td><td>${c.score}</td><td>${c.correct}/${c.wrong}</td></tr>`;
       });
       html += '</tbody></table>';
       container.innerHTML = html;
@@ -203,21 +120,17 @@
     function doExport() {
       const data = exportUserData();
       if (!data) { alert('没有可导出的记录'); return; }
-      const area = document.getElementById('sync-area');
-      area.style.display = 'block';
-      document.getElementById('sync-data').value = data;
-      document.getElementById('sync-data').select();
-      try { document.execCommand('copy'); }
-      catch(e) {}
-      document.getElementById('sync-msg').textContent = '已复制到剪贴板，粘贴到其他设备导入即可';
+      document.getElementById('sync-area').style.display = 'block';
+      const ta = document.getElementById('sync-data');
+      ta.value = data; ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.getElementById('sync-msg').textContent = '已复制到剪贴板';
       document.getElementById('sync-msg').className = 'ok';
     }
 
     function showImport() {
-      const area = document.getElementById('sync-area');
-      area.style.display = 'block';
+      document.getElementById('sync-area').style.display = 'block';
       document.getElementById('sync-data').value = '';
-      document.getElementById('sync-data').placeholder = '粘贴从其他设备导出的记录...';
       document.getElementById('sync-msg').textContent = '';
     }
 

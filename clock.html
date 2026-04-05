@@ -6,49 +6,26 @@
   <title>认识时钟 🕐</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .score-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .score-item {
-      background: #f0f7ff;
-      border: 2px solid #84b6f4;
-      border-radius: 12px;
-      padding: 6px 4px;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: #1a73e8;
-    }
-    .score-item .val {
-      font-size: 1.2rem;
-      display: block;
-    }
     .clock-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
     #clockCanvas {
       border-radius: 50%;
-      box-shadow: 0 6px 24px rgba(26,115,232,0.2);
-      display: block;
-      /* 响应式：最大不超过容器宽度 */
-      width: min(240px, 80vw);
-      height: min(240px, 80vw);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      width: min(220px, 70vw);
+      height: min(220px, 70vw);
     }
     .time-display {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #1a73e8;
-      letter-spacing: 4px;
-      background: #f0f7ff;
-      border: 2px solid #84b6f4;
-      border-radius: 14px;
-      padding: 6px 24px;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #333;
+      letter-spacing: 3px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 6px 20px;
     }
     .answer-row {
       display: flex;
@@ -56,71 +33,22 @@
       justify-content: center;
       gap: 8px;
     }
-    .answer-row input {
-      width: 72px;
-      text-align: center;
-      font-size: 1.2rem;
-      padding: 8px 6px;
-    }
-    .answer-row .lbl {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #1a73e8;
-    }
-    .slider-wrap {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .slider-row label {
-      width: 36px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      color: #1a73e8;
-      flex-shrink: 0;
-    }
-    .slider-row input[type=range] {
-      flex: 1;
-      border: none;
-      padding: 0;
-    }
-    .slider-row .slider-val {
-      width: 32px;
-      text-align: right;
-      font-weight: bold;
-      color: #1a73e8;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-    }
-    .btn-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-    }
+    .answer-row input { width: 64px; text-align: center; font-size: 1.1rem; padding: 8px 6px; }
+    .answer-row .lbl { font-size: 1rem; font-weight: 600; color: #555; }
+    .slider-wrap { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .slider-row { display: flex; align-items: center; gap: 8px; }
+    .slider-row label { width: 36px; font-weight: 600; font-size: 0.85rem; color: #555; }
+    .slider-row input[type=range] { flex: 1; border: none; padding: 0; }
+    .slider-row .slider-val { width: 28px; text-align: right; font-weight: 600; color: #555; font-size: 0.9rem; }
+    .btn-row { width: 100%; }
     .btn-row .btn { width: 100%; }
-    .mode-desc {
-      font-size: 0.88rem;
-      color: #999;
-      text-align: center;
-    }
-    .knowledge-list {
-      line-height: 2;
-      padding-left: 18px;
-      color: #555;
-      font-size: 0.95rem;
-    }
+    .mode-desc { font-size: 0.82rem; color: #999; text-align: center; }
+    .knowledge-list { line-height: 1.9; padding-left: 18px; color: #666; font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <span class="logo">🌟 含诺（Arlo）学习站</span>
+    <span class="logo">🌟 含诺学习站</span>
     <a href="index.html">🏠 首页</a>
     <a href="units.html">📏 换算</a>
     <a href="clock.html">🕐 时钟</a>
@@ -128,27 +56,21 @@
 
   <div class="container">
     <div class="card">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <span style="font-size:1.8rem;">🕐</span>
-        <h1 style="color:#1a73e8;font-size:1.4rem;">认识时钟</h1>
-      </div>
+      <h1 style="font-size:1.2rem;margin-bottom:12px;">🕐 认识时钟</h1>
 
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchMode('read',this)">👀 看钟面填时间</button>
-        <button class="tab-btn" onclick="switchMode('set',this)">✏️ 看时间拨指针</button>
+        <button class="tab-btn active" onclick="switchMode('read',this)">看钟填时间</button>
+        <button class="tab-btn" onclick="switchMode('set',this)">看时间拨指针</button>
       </div>
 
-      <div class="score-bar">
-        <div class="score-item">🏆 得分<span class="val" id="score">0</span></div>
-        <div class="score-item">✅ 答对<span class="val" id="correct">0</span></div>
-        <div class="score-item">❌ 答错<span class="val" id="wrong">0</span></div>
+      <div class="score-inline">
+        得分 <span id="score">0</span> ｜ 对 <span id="correct">0</span> ｜ 错 <span id="wrong">0</span>
       </div>
 
       <p class="mode-desc" id="mode-desc">观察钟面，填写正确的时间</p>
 
       <div class="clock-wrap">
         <canvas id="clockCanvas" width="240" height="240"></canvas>
-
         <div class="time-display" id="time-display" style="display:none;"></div>
 
         <div id="read-area">
@@ -174,22 +96,19 @@
         </div>
 
         <div class="btn-row">
-          <button class="btn btn-primary" onclick="newQuestion()">🎲 出题</button>
-          <button class="btn btn-success" onclick="checkAnswer()">✅ 提交</button>
+          <button class="btn btn-primary" onclick="submitAndNext()">提交并下一题 →</button>
         </div>
-
         <div class="result-box" id="result"></div>
       </div>
     </div>
 
     <div class="card">
-      <h2 style="color:#1a73e8;margin-bottom:10px;font-size:1.1rem;">📖 时钟小知识</h2>
+      <h2 style="font-size:1rem;margin-bottom:8px;">📖 时钟小知识</h2>
       <ul class="knowledge-list">
-        <li>钟面上有 <b>12</b> 个数字，<b>60</b> 个小格</li>
-        <li>短针是<b>时针</b>，走一圈是 <b>12小时</b></li>
-        <li>长针是<b>分针</b>，走一圈是 <b>60分钟</b></li>
-        <li>分针走一小格是 <b>1分钟</b>，走一大格是 <b>5分钟</b></li>
-        <li>时针走一大格是 <b>1小时</b></li>
+        <li>钟面有 12 个数字，60 个小格</li>
+        <li>短针是时针，走一圈 12 小时</li>
+        <li>长针是分针，走一圈 60 分钟</li>
+        <li>分针走一小格 1 分钟，一大格 5 分钟</li>
       </ul>
     </div>
   </div>
@@ -200,101 +119,70 @@
   <script>
     const canvas = document.getElementById('clockCanvas');
     const ctx = canvas.getContext('2d');
-
     let mode = 'read';
     let questionHour = 0, questionMin = 0;
     let userHour = 0, userMin = 0;
     let scoreVal = 0, correctVal = 0, wrongVal = 0;
 
-    // 页面加载时恢复今日记录
     function initFromStore() {
       const rec = getTodayRecord('clock');
-      scoreVal = rec.score;
-      correctVal = rec.correct;
-      wrongVal = rec.wrong;
+      scoreVal = rec.score; correctVal = rec.correct; wrongVal = rec.wrong;
       updateScore();
     }
-
     function saveToStore() {
       saveTodayRecord('clock', { score: scoreVal, correct: correctVal, wrong: wrongVal });
     }
 
-    initAuth(async function() { await cloudInit(); initFromStore(); });
-
-    function getSize() {
-      // 实际渲染尺寸跟随 CSS 宽度
-      return canvas.getBoundingClientRect().width || 240;
-    }
+    initAuth(async function() { await cloudInit(); initFromStore(); newQuestion(); });
 
     function drawClock(h, m) {
-      const size = canvas.width; // 固定用 canvas 内部坐标 240
+      const size = canvas.width;
       const cx = size / 2, cy = size / 2, r = size / 2 - 6;
-
       ctx.clearRect(0, 0, size, size);
 
       // 表盘
-      const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, r);
-      grad.addColorStop(0, '#f0f7ff');
-      grad.addColorStop(1, '#cce4ff');
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-      ctx.fillStyle = grad;
-      ctx.fill();
-      ctx.strokeStyle = '#1a73e8';
-      ctx.lineWidth = 4;
-      ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+      ctx.fillStyle = '#f8f9fa'; ctx.fill();
+      ctx.strokeStyle = '#ddd'; ctx.lineWidth = 2; ctx.stroke();
 
       // 刻度
       for (let i = 0; i < 60; i++) {
         const angle = (i / 60) * 2 * Math.PI - Math.PI / 2;
         const isBig = i % 5 === 0;
-        const inner = isBig ? r - 14 : r - 8;
+        const inner = isBig ? r - 12 : r - 6;
         ctx.beginPath();
         ctx.moveTo(cx + inner * Math.cos(angle), cy + inner * Math.sin(angle));
         ctx.lineTo(cx + (r - 2) * Math.cos(angle), cy + (r - 2) * Math.sin(angle));
-        ctx.strokeStyle = isBig ? '#1a73e8' : '#84b6f4';
-        ctx.lineWidth = isBig ? 2.5 : 1.2;
+        ctx.strokeStyle = isBig ? '#555' : '#ccc';
+        ctx.lineWidth = isBig ? 2 : 1;
         ctx.stroke();
       }
 
       // 数字
-      ctx.fillStyle = '#1a73e8';
-      ctx.font = `bold ${size * 0.07}px Comic Sans MS, cursive`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#333';
+      ctx.font = `600 ${size * 0.07}px -apple-system, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       for (let i = 1; i <= 12; i++) {
         const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
-        const nr = r - 26;
-        ctx.fillText(i, cx + nr * Math.cos(angle), cy + nr * Math.sin(angle));
+        ctx.fillText(i, cx + (r - 24) * Math.cos(angle), cy + (r - 24) * Math.sin(angle));
       }
 
       // 时针
       const hAngle = ((h % 12) + m / 60) / 12 * 2 * Math.PI - Math.PI / 2;
-      drawHand(cx, cy, hAngle, r * 0.5, 6, '#1a73e8');
-
+      drawHand(cx, cy, hAngle, r * 0.48, 5, '#333');
       // 分针
       const mAngle = (m / 60) * 2 * Math.PI - Math.PI / 2;
-      drawHand(cx, cy, mAngle, r * 0.72, 3.5, '#4facfe');
+      drawHand(cx, cy, mAngle, r * 0.7, 3, '#1a73e8');
 
       // 中心
-      ctx.beginPath();
-      ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
-      ctx.fillStyle = '#1a73e8';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, 2 * Math.PI);
-      ctx.fillStyle = '#fff';
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(cx, cy, 4, 0, 2 * Math.PI);
+      ctx.fillStyle = '#333'; ctx.fill();
     }
 
     function drawHand(cx, cy, angle, length, width, color) {
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
+      ctx.beginPath(); ctx.moveTo(cx, cy);
       ctx.lineTo(cx + length * Math.cos(angle), cy + length * Math.sin(angle));
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      ctx.lineCap = 'round';
-      ctx.stroke();
+      ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round'; ctx.stroke();
     }
 
     function switchMode(m, btn) {
@@ -305,9 +193,8 @@
       document.getElementById('set-area').style.display = m === 'set' ? 'block' : 'none';
       document.getElementById('time-display').style.display = m === 'set' ? 'block' : 'none';
       document.getElementById('mode-desc').textContent =
-        m === 'read' ? '观察钟面，填写正确的时间' : '根据显示的时间，拨动滑块让指针指向正确位置';
-      hideResult();
-      newQuestion();
+        m === 'read' ? '观察钟面，填写正确的时间' : '根据时间，拨动滑块到正确位置';
+      hideResult(); newQuestion();
     }
 
     function newQuestion() {
@@ -317,15 +204,14 @@
         drawClock(questionHour, questionMin);
         document.getElementById('inp-hour').value = '';
         document.getElementById('inp-min').value = '';
+        document.getElementById('inp-hour').focus();
       } else {
-        const hStr = questionHour.toString().padStart(2, '0');
-        const mStr = questionMin.toString().padStart(2, '0');
-        document.getElementById('time-display').textContent = `${hStr} : ${mStr}`;
+        document.getElementById('time-display').textContent =
+          questionHour.toString().padStart(2, '0') + ' : ' + questionMin.toString().padStart(2, '0');
         document.getElementById('slider-hour').value = 0;
         document.getElementById('slider-min').value = 0;
         userHour = 0; userMin = 0;
-        updateSliderLabels();
-        drawClock(0, 0);
+        updateSliderLabels(); drawClock(0, 0);
       }
       hideResult();
     }
@@ -333,46 +219,40 @@
     function onSliderChange() {
       userHour = parseInt(document.getElementById('slider-hour').value);
       userMin = parseInt(document.getElementById('slider-min').value);
-      updateSliderLabels();
-      drawClock(userHour, userMin);
+      updateSliderLabels(); drawClock(userHour, userMin);
     }
 
     function updateSliderLabels() {
       const h = parseInt(document.getElementById('slider-hour').value);
       document.getElementById('lbl-hour').textContent = h === 0 ? '12' : h;
-      document.getElementById('lbl-min').textContent =
-        document.getElementById('slider-min').value.toString().padStart(2, '0');
+      document.getElementById('lbl-min').textContent = document.getElementById('slider-min').value.toString().padStart(2, '0');
     }
 
-    function checkAnswer() {
+    function submitAndNext() {
+      let isCorrect = false;
       if (mode === 'read') {
         const h = parseInt(document.getElementById('inp-hour').value);
         const m = parseInt(document.getElementById('inp-min').value);
-        if (isNaN(h) || isNaN(m)) { showResult('请填写时和分！', 'info'); return; }
-        if (h === questionHour && m === questionMin) {
-          correctVal++; scoreVal += 10;
-          showResult(`🎉 正确！是 ${questionHour} 时 ${questionMin} 分！`, 'correct');
-        } else {
-          wrongVal++;
-          showResult(`😅 答错了！正确是 ${questionHour} 时 ${questionMin} 分，再看看！`, 'wrong');
-        }
+        if (isNaN(h) || isNaN(m)) { showResult('请填写时和分', 'info'); return; }
+        isCorrect = (h === questionHour && m === questionMin);
       } else {
-        if (userHour % 12 === questionHour % 12 && userMin === questionMin) {
-          correctVal++; scoreVal += 10;
-          showResult(`🎉 拨对了！就是 ${questionHour} 时 ${questionMin} 分！`, 'correct');
-        } else {
-          wrongVal++;
-          showResult(`😅 没拨对！正确是 ${questionHour} 时 ${questionMin} 分，再试试！`, 'wrong');
-        }
+        isCorrect = (userHour % 12 === questionHour % 12 && userMin === questionMin);
       }
-      updateScore();
-      saveToStore();
+
+      if (isCorrect) {
+        correctVal++; scoreVal += 10;
+        showResult(`✅ 正确！${questionHour} 时 ${questionMin} 分`, 'correct');
+      } else {
+        wrongVal++;
+        showResult(`❌ 正确答案是 ${questionHour} 时 ${questionMin} 分`, 'wrong');
+      }
+      updateScore(); saveToStore();
+      setTimeout(() => { hideResult(); newQuestion(); }, 1500);
     }
 
     function showResult(msg, type) {
       const el = document.getElementById('result');
-      el.textContent = msg;
-      el.className = 'result-box ' + type;
+      el.textContent = msg; el.className = 'result-box ' + type;
     }
     function hideResult() { document.getElementById('result').className = 'result-box'; }
     function updateScore() {
@@ -381,7 +261,7 @@
       document.getElementById('wrong').textContent = wrongVal;
     }
 
-    drawClock(10, 10);
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') submitAndNext(); });
   </script>
 </body>
 </html>

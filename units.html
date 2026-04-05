@@ -6,37 +6,6 @@
   <title>单位换算 📏</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .score-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .score-item {
-      background: #f0f7ff;
-      border: 2px solid #84b6f4;
-      border-radius: 12px;
-      padding: 6px 4px;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: #1a73e8;
-    }
-    .score-item .val {
-      font-size: 1.2rem;
-      display: block;
-    }
-    .question-area {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #1a73e8;
-      margin-bottom: 14px;
-      padding: 14px 12px;
-      background: #f0f7ff;
-      border-radius: 14px;
-      border: 2px dashed #84b6f4;
-      text-align: center;
-    }
     .answer-row {
       display: flex;
       align-items: center;
@@ -51,49 +20,38 @@
       padding: 8px 10px;
     }
     .unit-text {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #1a73e8;
-      min-width: 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #555;
     }
     .btn-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       gap: 8px;
     }
-    .btn-row .btn {
-      width: 100%;
-      padding: 10px 4px;
-      font-size: 0.95rem;
-    }
+    .btn-row .btn { flex: 1; text-align: center; }
     .reference-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     .reference-table th {
-      background: linear-gradient(135deg, #1a73e8, #4facfe);
+      background: #1a73e8;
       color: #fff;
-      padding: 8px;
+      padding: 7px;
       text-align: center;
     }
     .reference-table td {
-      padding: 7px 8px;
+      padding: 6px 8px;
       text-align: center;
-      border-bottom: 1px solid #cce4ff;
+      border-bottom: 1px solid #eee;
     }
-    .reference-table tr:nth-child(even) td {
-      background: #f0f7ff;
-    }
-    .cn-unit {
-      color: #4facfe;
-      font-size: 0.8em;
-    }
+    .reference-table tr:nth-child(even) td { background: #f8f9fa; }
+    .cn-unit { color: #999; font-size: 0.8em; }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <span class="logo">🌟 含诺（Arlo）学习站</span>
+    <span class="logo">🌟 含诺学习站</span>
     <a href="index.html">🏠 首页</a>
     <a href="units.html">📏 换算</a>
     <a href="clock.html">🕐 时钟</a>
@@ -101,34 +59,28 @@
 
   <div class="container">
     <div class="card">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-        <span style="font-size:1.8rem;">📏</span>
-        <h1 style="color:#1a73e8;font-size:1.4rem;">单位换算练习</h1>
-      </div>
+      <h1 style="font-size:1.2rem;margin-bottom:12px;">📏 单位换算</h1>
 
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchCategory('length',this)">📐 长度</button>
-        <button class="tab-btn" onclick="switchCategory('weight',this)">⚖️ 重量</button>
-        <button class="tab-btn" onclick="switchCategory('time',this)">⏱️ 时间</button>
-        <button class="tab-btn" onclick="switchCategory('area',this)">🟦 面积</button>
+        <button class="tab-btn active" onclick="switchCategory('length',this)">长度</button>
+        <button class="tab-btn" onclick="switchCategory('weight',this)">重量</button>
+        <button class="tab-btn" onclick="switchCategory('time',this)">时间</button>
+        <button class="tab-btn" onclick="switchCategory('area',this)">面积</button>
       </div>
 
-      <div class="score-bar">
-        <div class="score-item">🏆 得分<span class="val" id="score">0</span></div>
-        <div class="score-item">✅ 答对<span class="val" id="correct">0</span></div>
-        <div class="score-item">❌ 答错<span class="val" id="wrong">0</span></div>
+      <div class="score-inline">
+        得分 <span id="score">0</span> ｜ 对 <span id="correct">0</span> ｜ 错 <span id="wrong">0</span>
       </div>
 
-      <div class="question-area" id="question">点击「出题」开始练习 🎯</div>
+      <div class="question-area" id="question">加载中...</div>
 
       <div class="answer-row">
-        <input type="number" id="answer" placeholder="填写答案" step="any" />
+        <input type="number" id="answer" placeholder="答案" step="any" />
         <span class="unit-text" id="target-unit"></span>
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="newQuestion()">🎲 出题</button>
-        <button class="btn btn-success" onclick="checkAnswer()">✅ 提交</button>
+        <button class="btn btn-primary" onclick="submitAndNext()">提交并下一题 →</button>
         <button class="btn btn-secondary" onclick="showHint()">💡 提示</button>
       </div>
 
@@ -136,7 +88,7 @@
     </div>
 
     <div class="card">
-      <h2 style="color:#1a73e8;margin-bottom:12px;font-size:1.1rem;">📖 换算参考表</h2>
+      <h2 style="font-size:1rem;margin-bottom:10px;">📖 换算参考表</h2>
       <div id="ref-table-container"></div>
     </div>
   </div>
@@ -184,12 +136,9 @@
     let currentQuestion = null;
     let scoreVal = 0, correctVal = 0, wrongVal = 0;
 
-    // 页面加载时恢复今日记录
     function initFromStore() {
       const rec = getTodayRecord('units');
-      scoreVal = rec.score;
-      correctVal = rec.correct;
-      wrongVal = rec.wrong;
+      scoreVal = rec.score; correctVal = rec.correct; wrongVal = rec.wrong;
       updateScore();
     }
 
@@ -197,28 +146,23 @@
       saveTodayRecord('units', { score: scoreVal, correct: correctVal, wrong: wrongVal });
     }
 
-    initAuth(async function() { await cloudInit(); initFromStore(); });
+    initAuth(async function() { await cloudInit(); initFromStore(); newQuestion(); });
 
     function switchCategory(cat, btn) {
       currentCategory = cat;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      currentQuestion = null;
-      document.getElementById('question').textContent = '点击「出题」开始练习 🎯';
-      document.getElementById('target-unit').textContent = '';
       document.getElementById('answer').value = '';
       hideResult();
       renderRefTable();
+      newQuestion();
     }
 
     function renderRefTable() {
       const cat = categories[currentCategory];
       let html = '<table class="reference-table"><thead><tr><th>单位</th><th>换算关系</th></tr></thead><tbody>';
       cat.ref.forEach(r => {
-        html += `<tr>
-          <td>${r[0]} <span class="cn-unit">(${r[1]})</span></td>
-          <td>${r[2]} <span class="cn-unit">(${r[3]})</span></td>
-        </tr>`;
+        html += `<tr><td>${r[0]} <span class="cn-unit">(${r[1]})</span></td><td>${r[2]} <span class="cn-unit">(${r[3]})</span></td></tr>`;
       });
       html += '</tbody></table>';
       document.getElementById('ref-table-container').innerHTML = html;
@@ -233,13 +177,11 @@
       const fromUnit = units[fromIdx], toUnit = units[toIdx];
       const { fromVal, toVal } = generateNiceValue(cat, fromUnit, toUnit);
       currentQuestion = { fromVal, fromUnit, toUnit, answer: toVal };
-      const fromCN = unitCN[fromUnit] || '';
-      const toCN = unitCN[toUnit] || '';
       document.getElementById('question').innerHTML =
-        `<span style="color:#f5576c;">${fromVal}</span> ${fromUnit}<small style="color:#888;">(${fromCN})</small> = ？ ${toUnit}<small style="color:#888;">(${toCN})</small>`;
+        `<span style="color:#1a73e8;">${fromVal}</span> ${fromUnit}<small style="color:#999;">(${unitCN[fromUnit]||''})</small> = ？ ${toUnit}<small style="color:#999;">(${unitCN[toUnit]||''})</small>`;
       document.getElementById('target-unit').textContent = toUnit;
       document.getElementById('answer').value = '';
-      hideResult();
+      document.getElementById('answer').focus();
     }
 
     function generateNiceValue(cat, fromUnit, toUnit) {
@@ -254,35 +196,34 @@
       return { fromVal, toVal: fromVal * ratio };
     }
 
-    function checkAnswer() {
-      if (!currentQuestion) { showResult('请先点击「出题」！', 'info'); return; }
+    function submitAndNext() {
+      if (!currentQuestion) { newQuestion(); return; }
       const userVal = parseFloat(document.getElementById('answer').value);
-      if (isNaN(userVal)) { showResult('请输入一个数字！', 'info'); return; }
+      if (isNaN(userVal)) { showResult('请输入答案', 'info'); return; }
       if (Math.abs(userVal - currentQuestion.answer) < 1e-9) {
         correctVal++; scoreVal += 10;
-        showResult(`🎉 正确！${currentQuestion.fromVal} ${currentQuestion.fromUnit} = ${currentQuestion.answer} ${currentQuestion.toUnit}`, 'correct');
+        showResult(`✅ 正确！${currentQuestion.fromVal} ${currentQuestion.fromUnit} = ${currentQuestion.answer} ${currentQuestion.toUnit}`, 'correct');
       } else {
         wrongVal++;
-        showResult(`😅 答错了！正确答案是 ${currentQuestion.answer} ${currentQuestion.toUnit}，加油！`, 'wrong');
+        showResult(`❌ 正确答案是 ${currentQuestion.answer} ${currentQuestion.toUnit}`, 'wrong');
       }
-      updateScore();
-      saveToStore();
+      updateScore(); saveToStore();
       currentQuestion = null;
+      setTimeout(() => { hideResult(); newQuestion(); }, 1500);
     }
 
     function showHint() {
-      if (!currentQuestion) { showResult('请先点击「出题」！', 'info'); return; }
+      if (!currentQuestion) return;
       const ratio = categories[currentCategory].toBase[currentQuestion.fromUnit] / categories[currentCategory].toBase[currentQuestion.toUnit];
       const hint = ratio > 1
-        ? `💡 1 ${currentQuestion.fromUnit} = ${ratio} ${currentQuestion.toUnit}，所以乘以 ${ratio}`
-        : `💡 1 ${currentQuestion.toUnit} = ${1/ratio} ${currentQuestion.fromUnit}，所以除以 ${1/ratio}`;
+        ? `💡 1 ${currentQuestion.fromUnit} = ${ratio} ${currentQuestion.toUnit}`
+        : `💡 1 ${currentQuestion.toUnit} = ${1/ratio} ${currentQuestion.fromUnit}`;
       showResult(hint, 'info');
     }
 
     function showResult(msg, type) {
       const el = document.getElementById('result');
-      el.textContent = msg;
-      el.className = 'result-box ' + type;
+      el.textContent = msg; el.className = 'result-box ' + type;
     }
     function hideResult() { document.getElementById('result').className = 'result-box'; }
     function updateScore() {
@@ -291,7 +232,7 @@
       document.getElementById('wrong').textContent = wrongVal;
     }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') submitAndNext(); });
     renderRefTable();
   </script>
 </body>
