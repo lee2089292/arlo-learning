@@ -34,7 +34,7 @@
 
   <div class="container">
     <div class="card">
-      <h1 style="font-size:1.2rem;margin-bottom:12px;">🔤 英语单词（四年级下册）</h1>
+      <h1 style="font-size:1.2rem;margin-bottom:12px;">🔤 英语单词（四年级下册·外研版）</h1>
 
       <div class="mode-toggle">
         <button class="tab-btn active" onclick="setMode('cn2en',this)">中文→英文</button>
@@ -82,7 +82,7 @@
       const container = document.getElementById('unit-select');
       let html = '<button class="tab-btn active" onclick="selectUnit(\'all\',this)">全部</button>';
       for (const mod in WORD_DATA) {
-        const short = mod.replace('Module ', 'M');
+        const short = mod.replace('Unit ', 'U');
         html += `<button class="tab-btn" onclick="selectUnit('${mod}',this)">${short}</button>`;
       }
       container.innerHTML = html;
