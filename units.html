@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>单位换算 📏</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .score-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .score-item {
+      background: #f0f7ff;
+      border: 2px solid #84b6f4;
+      border-radius: 12px;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #1a73e8;
+    }
+    .score-item .val {
+      font-size: 1.2rem;
+      display: block;
+    }
+    .question-area {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #1a73e8;
+      margin-bottom: 14px;
+      padding: 14px 12px;
+      background: #f0f7ff;
+      border-radius: 14px;
+      border: 2px dashed #84b6f4;
+      text-align: center;
+    }
+    .answer-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .answer-row input {
+      width: 110px;
+      text-align: center;
+      font-size: 1.1rem;
+      padding: 8px 10px;
+    }
+    .unit-text {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #1a73e8;
+      min-width: 40px;
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .btn-row .btn {
+      width: 100%;
+      padding: 10px 4px;
+      font-size: 0.95rem;
+    }
+    .reference-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .reference-table th {
+      background: linear-gradient(135deg, #1a73e8, #4facfe);
+      color: #fff;
+      padding: 8px;
+      text-align: center;
+    }
+    .reference-table td {
+      padding: 7px 8px;
+      text-align: center;
+      border-bottom: 1px solid #cce4ff;
+    }
+    .reference-table tr:nth-child(even) td {
+      background: #f0f7ff;
+    }
+    .cn-unit {
+      color: #4facfe;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <span class="logo">🌟 含诺（Arlo）学习站</span>
+    <a href="index.html">🏠 首页</a>
+    <a href="units.html">📏 换算</a>
+    <a href="clock.html">🕐 时钟</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:1.8rem;">📏</span>
+        <h1 style="color:#1a73e8;font-size:1.4rem;">单位换算练习</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchCategory('length',this)">📐 长度</button>
+        <button class="tab-btn" onclick="switchCategory('weight',this)">⚖️ 重量</button>
+        <button class="tab-btn" onclick="switchCategory('time',this)">⏱️ 时间</button>
+        <button class="tab-btn" onclick="switchCategory('area',this)">🟦 面积</button>
+      </div>
+
+      <div class="score-bar">
+        <div class="score-item">🏆 得分<span class="val" id="score">0</span></div>
+        <div class="score-item">✅ 答对<span class="val" id="correct">0</span></div>
+        <div class="score-item">❌ 答错<span class="val" id="wrong">0</span></div>
+      </div>
+
+      <div class="question-area" id="question">点击「出题」开始练习 🎯</div>
+
+      <div class="answer-row">
+        <input type="number" id="answer" placeholder="填写答案" step="any" />
+        <span class="unit-text" id="target-unit"></span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="newQuestion()">🎲 出题</button>
+        <button class="btn btn-success" onclick="checkAnswer()">✅ 提交</button>
+        <button class="btn btn-secondary" onclick="showHint()">💡 提示</button>
+      </div>
+
+      <div class="result-box" id="result"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="color:#1a73e8;margin-bottom:12px;font-size:1.1rem;">📖 换算参考表</h2>
+      <div id="ref-table-container"></div>
+    </div>
+  </div>
+
+  <script>
+    const unitCN = {
+      'km':'千米','m':'米','dm':'分米','cm':'厘米','mm':'毫米',
+      't':'吨','kg':'千克','g':'克',
+      '时':'小时','分':'分钟','秒':'秒',
+      'km²':'平方千米','m²':'平方米','dm²':'平方分米','cm²':'平方厘米'
+    };
+
+    const categories = {
+      length: {
+        units: ['km','m','dm','cm','mm'],
+        toBase: {km:1e6,m:1e3,dm:100,cm:10,mm:1},
+        ref: [['1 km','千米','= 1000 m','米'],['1 m','米','= 10 dm','分米'],
+              ['1 dm','分米','= 10 cm','厘米'],['1 cm','厘米','= 10 mm','毫米'],
+              ['1 m','米','= 100 cm','厘米'],['1 m','米','= 1000 mm','毫米']]
+      },
+      weight: {
+        units: ['t','kg','g'],
+        toBase: {t:1e6,kg:1e3,g:1},
+        ref: [['1 t','吨','= 1000 kg','千克'],['1 kg','千克','= 1000 g','克'],
+              ['1 t','吨','= 1000000 g','克']]
+      },
+      time: {
+        units: ['时','分','秒'],
+        toBase: {'时':3600,'分':60,'秒':1},
+        ref: [['1 时','小时','= 60 分','分钟'],['1 分','分钟','= 60 秒','秒'],
+              ['1 时','小时','= 3600 秒','秒']]
+      },
+      area: {
+        units: ['km²','m²','dm²','cm²'],
+        toBase: {'km²':1e12,'m²':1e4,'dm²':100,'cm²':1},
+        ref: [['1 km²','平方千米','= 1000000 m²','平方米'],['1 m²','平方米','= 100 dm²','平方分米'],
+              ['1 dm²','平方分米','= 100 cm²','平方厘米'],['1 m²','平方米','= 10000 cm²','平方厘米']]
+      }
+    };
+
+    let currentCategory = 'length';
+    let currentQuestion = null;
+    let scoreVal = 0, correctVal = 0, wrongVal = 0;
+
+    function switchCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentQuestion = null;
+      document.getElementById('question').textContent = '点击「出题」开始练习 🎯';
+      document.getElementById('target-unit').textContent = '';
+      document.getElementById('answer').value = '';
+      hideResult();
+      renderRefTable();
+    }
+
+    function renderRefTable() {
+      const cat = categories[currentCategory];
+      let html = '<table class="reference-table"><thead><tr><th>单位</th><th>换算关系</th></tr></thead><tbody>';
+      cat.ref.forEach(r => {
+        html += `<tr>
+          <td>${r[0]} <span class="cn-unit">(${r[1]})</span></td>
+          <td>${r[2]} <span class="cn-unit">(${r[3]})</span></td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('ref-table-container').innerHTML = html;
+    }
+
+    function newQuestion() {
+      const cat = categories[currentCategory];
+      const units = cat.units;
+      let fromIdx = Math.floor(Math.random() * units.length);
+      let toIdx;
+      do { toIdx = Math.floor(Math.random() * units.length); } while (toIdx === fromIdx);
+      const fromUnit = units[fromIdx], toUnit = units[toIdx];
+      const { fromVal, toVal } = generateNiceValue(cat, fromUnit, toUnit);
+      currentQuestion = { fromVal, fromUnit, toUnit, answer: toVal };
+      const fromCN = unitCN[fromUnit] || '';
+      const toCN = unitCN[toUnit] || '';
+      document.getElementById('question').innerHTML =
+        `<span style="color:#f5576c;">${fromVal}</span> ${fromUnit}<small style="color:#888;">(${fromCN})</small> = ？ ${toUnit}<small style="color:#888;">(${toCN})</small>`;
+      document.getElementById('target-unit').textContent = toUnit;
+      document.getElementById('answer').value = '';
+      hideResult();
+    }
+
+    function generateNiceValue(cat, fromUnit, toUnit) {
+      const ratio = cat.toBase[fromUnit] / cat.toBase[toUnit];
+      let nums;
+      if (ratio >= 1000) nums = [1,2,3,5,10];
+      else if (ratio >= 100) nums = [1,2,3,5,10,20];
+      else if (ratio >= 10) nums = [1,2,3,5,10,20,50];
+      else if (ratio >= 1) nums = [10,20,30,50,100,150,200];
+      else nums = [10,20,50,100,200,500,1000];
+      const fromVal = nums[Math.floor(Math.random() * nums.length)];
+      return { fromVal, toVal: fromVal * ratio };
+    }
+
+    function checkAnswer() {
+      if (!currentQuestion) { showResult('请先点击「出题」！', 'info'); return; }
+      const userVal = parseFloat(document.getElementById('answer').value);
+      if (isNaN(userVal)) { showResult('请输入一个数字！', 'info'); return; }
+      if (Math.abs(userVal - currentQuestion.answer) < 1e-9) {
+        correctVal++; scoreVal += 10;
+        showResult(`🎉 正确！${currentQuestion.fromVal} ${currentQuestion.fromUnit} = ${currentQuestion.answer} ${currentQuestion.toUnit}`, 'correct');
+      } else {
+        wrongVal++;
+        showResult(`😅 答错了！正确答案是 ${currentQuestion.answer} ${currentQuestion.toUnit}，加油！`, 'wrong');
+      }
+      updateScore();
+      currentQuestion = null;
+    }
+
+    function showHint() {
+      if (!currentQuestion) { showResult('请先点击「出题」！', 'info'); return; }
+      const ratio = categories[currentCategory].toBase[currentQuestion.fromUnit] / categories[currentCategory].toBase[currentQuestion.toUnit];
+      const hint = ratio > 1
+        ? `💡 1 ${currentQuestion.fromUnit} = ${ratio} ${currentQuestion.toUnit}，所以乘以 ${ratio}`
+        : `💡 1 ${currentQuestion.toUnit} = ${1/ratio} ${currentQuestion.fromUnit}，所以除以 ${1/ratio}`;
+      showResult(hint, 'info');
+    }
+
+    function showResult(msg, type) {
+      const el = document.getElementById('result');
+      el.textContent = msg;
+      el.className = 'result-box ' + type;
+    }
+    function hideResult() { document.getElementById('result').className = 'result-box'; }
+    function updateScore() {
+      document.getElementById('score').textContent = scoreVal;
+      document.getElementById('correct').textContent = correctVal;
+      document.getElementById('wrong').textContent = wrongVal;
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+    renderRefTable();
+  </script>
+</body>
+</html>
