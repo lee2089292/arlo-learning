@@ -6,6 +6,16 @@
 function initAuth(onReady) {
   const saved = getSavedUser();
 
+  // 记录访问（异步，不阻塞登录流程）
+  if (typeof trackVisit === 'function') {
+    trackVisit().then(() => {
+      // 如果已有用户名，直接关联
+      if (saved && typeof linkVisitorName === 'function') {
+        linkVisitorName(saved);
+      }
+    }).catch(e => console.error('trackVisit error:', e));
+  }
+
   // 创建遮罩
   const overlay = document.createElement('div');
   overlay.id = 'auth-overlay';
@@ -50,6 +60,10 @@ function initAuth(onReady) {
       return;
     }
     saveUser(name);
+    // 关联用户名到访客记录
+    if (typeof linkVisitorName === 'function') {
+      linkVisitorName(name);
+    }
     overlay.remove();
     if (onReady) onReady(name);
   }
