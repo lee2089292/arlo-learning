@@ -65,6 +65,11 @@
         "score": 10,
         "correct": 1,
         "wrong": 0
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   }
