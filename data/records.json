@@ -45,6 +45,11 @@
         "score": 300,
         "correct": 30,
         "wrong": 3
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
