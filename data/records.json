@@ -91,6 +91,11 @@
         "score": 110,
         "correct": 11,
         "wrong": 4
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   }
