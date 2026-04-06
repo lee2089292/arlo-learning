@@ -70,6 +70,11 @@
         "score": 200,
         "correct": 20,
         "wrong": 12
+      },
+      "english": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   }
