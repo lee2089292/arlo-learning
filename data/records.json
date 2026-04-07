@@ -62,6 +62,11 @@
         "score": 0,
         "correct": 0,
         "wrong": 2
+      },
+      "english": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
