@@ -11,6 +11,13 @@
         "correct": 8,
         "wrong": 3
       }
+    },
+    "2026-04-10": {
+      "english": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
+      }
     }
   },
   "test": {
