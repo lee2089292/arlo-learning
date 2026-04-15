@@ -100,6 +100,11 @@
         "score": 460,
         "correct": 46,
         "wrong": 10
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
