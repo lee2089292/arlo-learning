@@ -119,6 +119,11 @@
         "score": 160,
         "correct": 16,
         "wrong": 6
+      },
+      "english": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
