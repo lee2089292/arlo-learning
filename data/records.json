@@ -142,8 +142,8 @@
     },
     "2026-05-05": {
       "english": {
-        "score": 0,
-        "correct": 0,
+        "score": 10,
+        "correct": 1,
         "wrong": 1
       }
     }
