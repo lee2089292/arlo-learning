@@ -162,6 +162,11 @@
         "score": 220,
         "correct": 22,
         "wrong": 8
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
