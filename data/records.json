@@ -197,9 +197,9 @@
     },
     "2026-05-12": {
       "english": {
-        "score": 150,
-        "correct": 15,
-        "wrong": 1
+        "score": 200,
+        "correct": 20,
+        "wrong": 2
       },
       "clock": {
         "score": 20,
