@@ -222,6 +222,11 @@
         "score": 50,
         "correct": 5,
         "wrong": 0
+      },
+      "units": {
+        "score": 0,
+        "correct": 0,
+        "wrong": 1
       }
     }
   },
