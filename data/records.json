@@ -248,6 +248,11 @@
         "score": 240,
         "correct": 24,
         "wrong": 3
+      },
+      "clock": {
+        "score": 0,
+        "correct": 0,
+        "wrong": 1
       }
     }
   },
