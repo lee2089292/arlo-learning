@@ -321,6 +321,11 @@
         "score": 830,
         "correct": 83,
         "wrong": 15
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
