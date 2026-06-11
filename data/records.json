@@ -384,6 +384,11 @@
         "score": 500,
         "correct": 50,
         "wrong": 2
+      },
+      "clock": {
+        "score": 10,
+        "correct": 1,
+        "wrong": 0
       }
     }
   },
