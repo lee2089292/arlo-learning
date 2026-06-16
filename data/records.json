@@ -424,6 +424,11 @@
         "score": 70,
         "correct": 7,
         "wrong": 0
+      },
+      "clock": {
+        "score": 0,
+        "correct": 0,
+        "wrong": 1
       }
     }
   }
